@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IshTop</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#fff8ef;--card:#fff;--ink:#1f1b3a;--mut:#6b6788;--p:#7c3aed;--o:#ff7a1a;--g:#10b981;--pk:#ff4d8d;--b:#ece4f5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17132b;--card:#221c3d;--ink:#f5f1ff;--mut:#b3aad6;--b:#352d5a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17132b;--card:#221c3d;--ink:#f5f1ff;--mut:#b3aad6;--b:#352d5a;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0;gap:8px}
+.logo{font-weight:800;font-size:1.4rem}.logo span{color:var(--pk)}
+.btn{border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;color:#fff;background:var(--p);font-size:.95rem}
+.btn.o{background:var(--o)}.btn.g{background:var(--g)}
+.hero{border-radius:28px;padding:28px 18px;color:#fff;text-align:center;background:linear-gradient(135deg,#7c3aed,#ff4d8d 60%,#ff7a1a)}
+.hero h1{margin:0 0 8px;font-size:clamp(1.5rem,6vw,2.5rem);line-height:1.15}
+.hero p{margin:0 0 18px;opacity:.95}
+.search{display:flex;flex-wrap:wrap;gap:8px;background:var(--card);padding:8px;border-radius:20px;max-width:640px;margin:0 auto}
+.search input,.search select{flex:1 1 150px;border:0;background:transparent;color:var(--ink);padding:12px;font-size:1rem;outline:none;min-width:0}
+.tabs{display:flex;gap:8px;margin:20px 0 4px}
+.tab{flex:1;border:2px solid var(--b);background:var(--card);color:var(--ink);border-radius:16px;padding:12px 8px;font-weight:800;cursor:pointer;font-size:1rem}
+.tab.on{background:var(--o);border-color:var(--o);color:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 6px}
+.chip{flex:none;border:2px solid var(--b);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 15px;font-weight:600;cursor:pointer}
+.chip.on{background:var(--p);border-color:var(--p);color:#fff}
+.chip.per.on{background:var(--g);border-color:var(--g)}
+.cnt{color:var(--mut);font-weight:600;padding:6px 0}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));padding:8px 0 32px}
+.job{background:var(--card);border:1px solid var(--b);border-radius:20px;padding:16px;border-top:6px solid var(--c)}
+.job h3{margin:8px 0 2px;font-size:1.05rem}.job .co{color:var(--mut);font-size:.9rem}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--c);color:#fff;margin-right:4px}
+.tag.k{background:var(--o)}.tag.m{background:var(--g)}
+.about{font-size:.9rem;margin:8px 0 0}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:8px}
+.sal{font-weight:800;color:var(--g)}
+.empty{text-align:center;color:var(--mut);padding:40px 0;grid-column:1/-1}
+.ov{position:fixed;inset:0;background:rgba(20,10,40,.6);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.ov.show{display:flex}
+.box{background:var(--card);width:100%;max-width:520px;max-height:92%;overflow:auto;border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+.box h2{margin:0 0 12px}
+.box label{display:block;font-weight:700;font-size:.85rem;margin:10px 0 4px}
+.box input,.box select,.box textarea{width:100%;padding:11px;border:2px solid var(--b);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit}
+.row{display:flex;gap:8px}.row>div{flex:1}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(140px);background:var(--g);color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;transition:.3s;max-width:90%;text-align:center;z-index:30}
+.toast.show{transform:translateX(-50%) translateY(0)}
+footer{text-align:center;color:var(--mut);padding:20px 0 32px;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><div class="logo">Ish<span>Top</span> 🚀</div><button class="btn o" onclick="openF()">+ Eʼlon berish</button></nav>
+<section class="hero">
+<h1>Ish top yoki ishchi top – bir joyda!</h1>
+<p>Kunlik va oylik ishlar. Oʻzingiz ham eʼlon bering.</p>
+<div class="search">
+<input id="q" placeholder="Kasb, ism yoki kompaniya…" oninput="render()">
+<select id="city" onchange="render()"><option value="">Barcha shaharlar</option><option>Toshkent</option><option>Samarqand</option><option>Buxoro</option><option>Andijon</option><option>Masofaviy</option></select>
+</div>
+</section>
+<div class="tabs"><button class="tab" id="t0" onclick="setKind(0)">💼 Ish bor</button><button class="tab" id="t1" onclick="setKind(1)">🙋 Ish izlayman</button></div>
+<div class="chips" id="per"></div>
+<div class="chips" id="chips"></div>
+<div class="cnt" id="cnt"></div>
+<div class="grid" id="list"></div>
+<footer>© 2026 IshTop · Ish qidirish endi oson 💜</footer>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeF()"><div class="box">
+<h2>Yangi eʼlon</h2>
+<label>Eʼlon turi</label>
+<select id="f_kind" onchange="fk()"><option value="1">🙋 Ish izlayman (men ishchi)</option><option value="0">💼 Ishchi kerak (vakansiya)</option></select>
+<label id="l_title">Kasbingiz (masalan: Mobilograf)</label><input id="f_title" maxlength="60">
+<label id="l_name">Ismingiz</label><input id="f_name" maxlength="40">
+<div class="row"><div><label>Shahar</label><select id="f_city"><option>Toshkent</option><option>Samarqand</option><option>Buxoro</option><option>Andijon</option><option>Masofaviy</option></select></div>
+<div><label>Toifa</label><select id="f_cat"><option>IT</option><option>Savdo</option><option>Dizayn</option><option>Xizmat</option><option>Taʼlim</option></select></div></div>
+<div class="row"><div><label>Ish turi</label><select id="f_per"><option>Oylik</option><option>Kunlik</option></select></div>
+<div><label id="l_sal">Kutilayotgan maosh</label><input id="f_sal" placeholder="Masalan: 5 mln/oy" maxlength="30"></div></div>
+<label>Telefon yoki Telegram</label><input id="f_ct" placeholder="+998… yoki @username" maxlength="40">
+<label>Qisqacha taʼrif</label><textarea id="f_ab" rows="2" maxlength="140" placeholder="Tajriba, qanday ish kerakligi…"></textarea>
+<div class="meta"><button class="btn" style="background:var(--mut)" onclick="closeF()">Bekor</button><button class="btn g" onclick="save()">Eʼlon qilish</button></div>
+</div></div>
+<div class="toast" id="t"></div>
+
+<script>
+var cats=[["Hammasi","#7c3aed"],["IT","#7c3aed"],["Savdo","#ff7a1a"],["Dizayn","#ff4d8d"],["Xizmat","#10b981"],["Taʼlim","#0ea5e9"]];
+var pers=["Hammasi","Kunlik","Oylik"];
+// {k:0 vakansiya | 1 ishchi, t:kasb, n:ism/kompaniya, c:shahar, g:toifa, p:davr, s:maosh, ct:aloqa, a:taʼrif}
+var data=[
+{k:0,t:"Frontend dasturchi",n:"Tech Uz",c:"Toshkent",g:"IT",p:"Oylik",s:"8–15 mln/oy",ct:"@techuz_hr",a:"React bilan tajriba kerak."},
+{k:0,t:"Yuk tashuvchi",n:"Baraka Ombor",c:"Samarqand",g:"Xizmat",p:"Kunlik",s:"150 ming/kun",ct:"+998 90 111 22 33",a:"Har kuni toʻlov, 8:00–17:00."},
+{k:0,t:"Sotuv menejeri",n:"Mega Market",c:"Samarqand",g:"Savdo",p:"Oylik",s:"4–7 mln/oy",ct:"@megamarket",a:"Oklad + bonus."},
+{k:0,t:"Kuryer",n:"Tezyetkaz",c:"Toshkent",g:"Xizmat",p:"Kunlik",s:"200 ming/kun",ct:"+998 91 222 33 44",a:"Oʻz velosipedi yoki mototsikli bor."},
+{k:0,t:"Grafik dizayner",n:"Creative Lab",c:"Masofaviy",g:"Dizayn",p:"Oylik",s:"6–10 mln/oy",ct:"@creativelab",a:"Figma va Photoshop."},
+{k:0,t:"Qurilish yordamchisi",n:"Usta Servis",c:"Buxoro",g:"Xizmat",p:"Kunlik",s:"180 ming/kun",ct:"+998 93 333 44 55",a:"Bir kunlik ham boʻladi."},
+{k:1,t:"Mobilograf",n:"Dilnoza",c:"Toshkent",g:"Dizayn",p:"Oylik",s:"5 mln/oy",ct:"@dilnoza_smm",a:"Reels, Instagram, Telegram uchun video suratga olaman va montaj qilaman."},
+{k:1,t:"Ingliz tili oʻqituvchisi",n:"Jasur",c:"Buxoro",g:"Taʼlim",p:"Oylik",s:"6 mln/oy",ct:"+998 94 555 66 77",a:"IELTS 7.5, 3 yillik tajriba."},
+{k:1,t:"Haydovchi",n:"Akmal",c:"Andijon",g:"Xizmat",p:"Kunlik",s:"250 ming/kun",ct:"+998 97 888 99 00",a:"B toifa, oʻz mashinasi bor."}
+];
+var kind=0,cat="Hammasi",per="Hammasi";
+var seed=data.slice(),TG=window.Telegram&&Telegram.WebApp;
+function load(){fetch("/api/posts").then(function(r){return r.json()}).then(function(a){data=a.concat(seed);render()}).catch(function(){})}
+if(TG){TG.ready();TG.expand()}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function col(c){for(var i=0;i<cats.length;i++)if(cats[i][0]==c)return cats[i][1];return"#7c3aed"}
+function bar(){
+document.getElementById("t0").className="tab"+(kind==0?" on":"");document.getElementById("t1").className="tab"+(kind==1?" on":"");
+document.getElementById("per").innerHTML=pers.map(function(c){return '<button class="chip per'+(c==per?' on':'')+'" onclick="setPer(\''+c+'\')">'+(c=="Kunlik"?"☀️ ":c=="Oylik"?"📅 ":"")+c+'</button>'}).join("");
+document.getElementById("chips").innerHTML=cats.map(function(c){return '<button class="chip'+(c[0]==cat?' on':'')+'" onclick="setCat(\''+c[0]+'\')">'+c[0]+'</button>'}).join("")}
+function setKind(k){kind=k;bar();render()}
+function setCat(c){cat=c;bar();render()}
+function setPer(p){per=p;bar();render()}
+function render(){
+var q=document.getElementById("q").value.toLowerCase(),ci=document.getElementById("city").value;
+var r=data.filter(function(j){return j.k==kind&&(cat=="Hammasi"||j.g==cat)&&(per=="Hammasi"||j.p==per)&&(!ci||j.c==ci)&&(j.t+j.n).toLowerCase().indexOf(q)>-1});
+document.getElementById("cnt").textContent=r.length+(kind==0?" ta vakansiya":" ta ishchi eʼloni");
+document.getElementById("list").innerHTML=r.length?r.map(function(j){
+var kp=j.p=="Kunlik"?"k":"m";
+return '<div class="job" style="--c:'+col(j.g)+'"><span class="tag">'+esc(j.g)+'</span><span class="tag '+kp+'">'+(j.p=="Kunlik"?"☀️ ":"📅 ")+esc(j.p)+'</span><h3>'+esc(j.t)+'</h3><div class="co">'+(kind==0?"🏢 ":"👤 ")+esc(j.n)+' · 📍 '+esc(j.c)+'</div>'+(j.a?'<p class="about">'+esc(j.a)+'</p>':'')+'<div class="meta"><span class="sal">'+esc(j.s)+'</span><button class="btn" onclick="contact(\''+data.indexOf(j)+'\')">'+(kind==0?"Ariza":"Bogʻlanish")+'</button></div></div>'}).join(""):'<div class="empty">😕 Hech narsa topilmadi.<br>Birinchi boʻlib eʼlon bering!</div>'}
+function contact(i){var j=data[i],c=j.ct||"";if(!c){toast("Aloqa kiritilmagan");return}if(c.charAt(0)=="@"&&TG){TG.openTelegramLink("https://t.me/"+c.slice(1))}else toast("Aloqa: "+c)}
+function fk(){var v=document.getElementById("f_kind").value=="1";
+document.getElementById("l_title").textContent=v?"Kasbingiz (masalan: Mobilograf)":"Lavozim (masalan: Kuryer)";
+document.getElementById("l_name").textContent=v?"Ismingiz":"Kompaniya nomi";
+document.getElementById("l_sal").textContent=v?"Kutilayotgan maosh":"Maosh"}
+function openF(){var u=TG&&TG.initDataUnsafe&&TG.initDataUnsafe.user;if(u){var n=document.getElementById("f_name"),c=document.getElementById("f_ct");if(!n.value)n.value=u.first_name||"";if(!c.value&&u.username)c.value="@"+u.username}document.getElementById("ov").className="ov show"}
+function closeF(){document.getElementById("ov").className="ov"}
+function save(){
+var g=function(i){return document.getElementById(i).value.trim()};
+if(!g("f_title")||!g("f_name")||!g("f_sal")){toast("Kasb, ism va maoshni toʻldiring");return}
+var p={k:+g("f_kind"),t:g("f_title"),n:g("f_name"),c:g("f_city"),g:g("f_cat"),p:g("f_per"),s:g("f_sal"),ct:g("f_ct"),a:g("f_ab")};
+data.unshift(p);
+fetch("/api/posts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({initData:TG?TG.initData:"",post:p})}).then(function(r){if(!r.ok)toast("Saqlanmadi. Telegram ichida oching va qayta urining")}).catch(function(){toast("Aloqa xatosi")});
+kind=p.k;cat="Hammasi";per="Hammasi";bar();render();closeF();
+["f_title","f_name","f_sal","f_ct","f_ab"].forEach(function(i){document.getElementById(i).value=""});
+toast("Eʼlon joylandi ✅")}
+var tm;function toast(s){var t=document.getElementById("t");t.textContent=s;t.className="toast show";clearTimeout(tm);tm=setTimeout(function(){t.className="toast"},2800)}
+bar();render();load();
+</script>
+</body>
+</html>
